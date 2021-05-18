@@ -78,7 +78,6 @@ public class Category implements Comparable<Category> {
         this.quantity -= quantity;
     }
 
-
     @Override
     public int compareTo(Category o) {
         return title.compareTo(o.getTitle());

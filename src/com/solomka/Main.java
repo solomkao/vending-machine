@@ -1,14 +1,5 @@
 package com.solomka;
 
-import com.solomka.exceptions.InvalidDataException;
-import com.solomka.models.Category;
-import com.solomka.services.VendingMachineService;
-import com.solomka.services.VendingMachineServiceImpl;
-
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
@@ -22,7 +13,7 @@ public class Main {
         menu();
     }
 
-    private static void menu(){
+    private static void menu() {
         String[] operations = new String[]{
                 "1. Register a snack category in the system.",
                 "2. Register provided amount of snack items to sell.",
@@ -38,28 +29,20 @@ public class Main {
             for (String op : operations) {
                 System.out.println(op);
             }
-            switch (scanner.nextLine()){
-                case "1": vendingMachine.addCategory(scanner);
-                    break;
-                case "2": vendingMachine.addItem(scanner);
-                    break;
-                case "3": vendingMachine.purchase(scanner);
-                    break;
-                case "4": vendingMachine.list();
-                    break;
-                case "5": vendingMachine.clear();
-                    break;
-                case "6": vendingMachine.report(scanner);
-                    break;
-                case "0":
+            switch (scanner.nextInt()) {
+                case 1 -> vendingMachine.addCategory(scanner);
+                case 2 -> vendingMachine.addItem(scanner);
+                case 3 -> vendingMachine.purchase(scanner);
+                case 4 -> vendingMachine.list();
+                case 5 -> vendingMachine.clear();
+                case 6 -> vendingMachine.report(scanner);
+                case 0 -> {
                     System.out.println("See you later.");
                     scanner.close();
                     return;
-                default:
-                    System.out.println("Incorrect number! Try again!");
+                }
+                default -> System.out.println("Incorrect number! Try again!");
             }
         }
     }
-
-
 }

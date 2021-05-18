@@ -1,6 +1,7 @@
 package com.solomka.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Purchase {
 
@@ -29,6 +30,19 @@ public class Purchase {
     @Override
     public String toString() {
         return categoriesTitle + " $"+price + " was sold " + date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Purchase purchase = (Purchase) o;
+        return Double.compare(purchase.price, price) == 0 && Objects.equals(categoriesTitle, purchase.categoriesTitle) && Objects.equals(date, purchase.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoriesTitle, price, date);
     }
 }
 

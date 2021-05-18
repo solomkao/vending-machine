@@ -5,6 +5,7 @@ import com.solomka.models.Category;
 import com.solomka.models.Purchase;
 import com.solomka.repositories.VendingMachineRepo;
 import com.solomka.repositories.VendingMachineRepoInMemImpl;
+import com.solomka.utils.DateValidator;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -27,6 +28,9 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
     @Override
     public void addCategory(String categoryTitle, double price, long quantity) throws InvalidDataException {
+        if(checkCategory(categoryTitle.trim())){
+            throw new InvalidDataException("That category was already added.");
+        }
         Category category = new Category(maxCategoriesCapacity);
         category.setTitle(categoryTitle);
         category.setPrice(price);
@@ -55,7 +59,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         }
     }
 
-    private boolean checkCategory(String categoryTitle) {
+    public boolean checkCategory(String categoryTitle) {
         List<Category> categories = vendingMachineRepository.list();
         for (Category category : categories) {
             if (category.getTitle().equalsIgnoreCase(categoryTitle)) {
@@ -83,12 +87,17 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     public List<Purchase> report(String date) throws InvalidDataException {
         List<Purchase> purchases = null;
         if (date.trim().length() == DAY_FORMATTER_SIZE) {
-            LocalDate dateOfPurchase = LocalDate.parse(date);
-            purchases = vendingMachineRepository.showPurchasesByPeriod(dateOfPurchase);
+            if(DateValidator.isValid(date.trim())) {
+                LocalDate dateOfPurchase = LocalDate.parse(date);
+                purchases = vendingMachineRepository.showPurchasesByPeriod(dateOfPurchase);
+            }
         }
         if (date.trim().length() == MONTH_FORMATTER_SIZE) {
-            LocalDate dateOfPurchase = LocalDate.parse(date + "-01");
-            purchases = vendingMachineRepository.showPurchasesByMonth(dateOfPurchase);
+            date = date.trim()+"-01";
+            if(DateValidator.isValid(date.trim())) {
+                LocalDate dateOfPurchase = LocalDate.parse(date);
+                purchases = vendingMachineRepository.showPurchasesByMonth(dateOfPurchase);
+            }
         }
 
         if (purchases == null || purchases.isEmpty()) {
