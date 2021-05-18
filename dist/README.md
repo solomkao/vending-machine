@@ -17,5 +17,8 @@ To run from the project root type in on command line:
 java -jar dist/vending-machine.jar
 ```
 
-
+To run downloaded jarfile type in on command line:
+```bash
+java -jar vending-machine.jar
+```
 
